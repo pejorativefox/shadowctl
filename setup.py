@@ -11,7 +11,7 @@ setup(
         'Development Status :: 3 - Alpha'],
     keywords='shadowsocks proxy socks5 vpn',
     packages=['shadowctl'],
-    install_requires=['shadowsocks', 'xdg==3.0.2'],
+    install_requires=['xdg==3.0.2'],
     entry_points={
         'console_scripts': [
             'shadowctl=shadowctl:main']},
