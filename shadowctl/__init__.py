@@ -22,6 +22,7 @@ import logging
 import tempfile
 import shlex
 import argparse
+from pathlib import Path
 
 
 # There are 2 versions: xdg and pyxdg
@@ -32,6 +33,12 @@ except ImportError:
     from xdg.BaseDirectory import get_runtime_dir, xdg_config_home
     XDG_CONFIG_HOME = xdg_config_home
     XDG_RUNTIME_DIR = get_runtime_dir()
+
+
+# Hack for OSX missing XDG_RUNTIME_DIR
+if XDG_RUNTIME_DIR == None:
+    XDG_RUNTIME_DIR = str(Path.home()) + '/.local/run'
+
 
 
 # See if we have a notification module
@@ -79,6 +86,7 @@ class ShadowsocksControl(object):
 
         config_buffer = string_from_file(config_path)
         config = json.loads(config_buffer)
+        # TODO: need to respect the config file if key exists
         self.pid_file = '{}/shadowsocks.pid'.format(XDG_RUNTIME_DIR)
         self.log_file = config['log_file']
         self.servers = config['servers']
@@ -230,4 +238,3 @@ def main():
 
     elif action_name == 'stop':
         ssc.stop()
-
